@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        // Set up your environment variables
         AWS_DEFAULT_REGION = 'us-east-1'
         ECR_REGISTRY = '093276084297.dkr.ecr.us-east-1.amazonaws.com'
         REPO_NAME = 'lucid-repo'
@@ -40,8 +41,11 @@ pipeline {
         stage('Deploy to AWS using Terraform') {
             steps {
                 script {
-                    sh "terraform init"
-                    sh "terraform apply -auto-approve -var 'image_tag=${IMAGE_TAG}'"
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
+                        // Assuming Terraform files are ready in the workspace
+                        sh "terraform init"
+                        sh "terraform apply  -var=aws_region=${AWS_DEFAULT_REGION} -auto-approve"
+                    }
                 }
             }
         }
