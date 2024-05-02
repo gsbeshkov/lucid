@@ -16,13 +16,6 @@ This project includes a comprehensive setup for a web application using Docker, 
 
 The Dockerfile is crafted to set up an Nginx server that serves our static website. It incorporates ImageMagick for image optimization to enhance performance by reducing image file sizes during the build process.
 
-```Dockerfile
-FROM nginx:alpine
-RUN apk add --no-cache imagemagick
-WORKDIR /usr/share/nginx/html
-COPY . .
-RUN find . -type f \( -iname \*.jpg -o -iname \*.png \) -exec convert "{}" -strip -quality 85 "{}" \;
-
 ## Jenkins for CI/CD
 
 The Jenkinsfile is configured to automate the deployment process, linking with GitHub for continuous integration. It includes stages for building the Docker image, pushing it to ECR, and deploying the infrastructure with Terraform.
@@ -30,7 +23,10 @@ The Jenkinsfile is configured to automate the deployment process, linking with G
 ## Docker-compose and Jenkins for DEVs
 
  **`jenkins.Dockerfile`**: Defines the Docker configuration for setting up a Jenkins server pre-configured with necessary plugins and settings.
-- **`docker-compose.yaml`**: Manages multi-container Docker applications, specifying services, networks, and volumes for our project.
+- **`docker-compose.yaml`**: Manages multi-container Docker applications, specifying services, networks, and volumes for our project. The docker-compose.yaml file is configured to orchestrate multiple containers that make up our development environment, including databases, backend services, and other dependencies.
+
+To start all services defined in the docker-compose.yaml file: docker-compose up -d
+
 
 ## Jenkins Configuration
 
@@ -47,7 +43,4 @@ The `jenkins.Dockerfile` sets up a Jenkins server tailored to our project's need
 ```bash
 docker build -t custom-jenkins -f jenkins.Dockerfile .
 
-The docker-compose.yaml file is configured to orchestrate multiple containers that make up our development environment, including databases, backend services, and other dependencies.
-
-To start all services defined in the docker-compose.yaml file: docker-compose up -d
 
