@@ -1,5 +1,5 @@
 data "external" "aws_secrets" {
-  program = ["bash", "-c", "aws secretsmanager get-secret-value --secret-id your-secret-name --query 'SecretString' --output text | jq -r ."]
+  program = ["bash", "-c", "aws secretsmanager get-secret-value --secret-id lucid-secrets --query 'SecretString' --output text | jq -r ."]
 }
 
 provider "aws" {
