@@ -1,6 +1,6 @@
 version: ""
 services:
-  # socat used because of MacOS did not support well socket mount. We face right issues with the non priviledged and nonroot jenkins docker image
+  # socat used because of MacOS did not support well socket mount. I faced issues with the non priviledged and nonroot jenkins docker image, and my Windows machine  crashed so i had to use mac to test
   socat:
     container_name: socat
     image: bobrik/socat
