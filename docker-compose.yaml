@@ -1,0 +1,27 @@
+version: ""
+services:
+  # socat used because of MacOS did not support well socket mount. We face right issues with the non priviledged and nonroot jenkins docker image
+  socat:
+    container_name: socat
+    image: bobrik/socat
+    command: tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock
+    ports:
+      - "2375:2375"
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+
+  jenkins:
+    container_name: jenkins
+    build:
+      dockerfile: jenkins.Dockerfile
+    restart: always
+    image: jenkins
+    ports: 
+    - "8080:8080"
+    - "5000:5000"
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+    environment:
+      DOCKER_HOST: socat:2375
+    depends_on:
+    - socat
