@@ -1,8 +1,3 @@
-variable "project_name" {
-  description = "The name of the project, used to tag resources"
-  default     = "MyProject"
-}
-
 resource "aws_ecr_repository" "my_website" {
   name                 = "${var.project_name}-repo"
   image_tag_mutability = "MUTABLE"
